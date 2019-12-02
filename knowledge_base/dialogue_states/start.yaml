@@ -1,0 +1,5 @@
+name: start
+transition_states:
+- intro_hello
+transition_probabilities:
+  intro_hello: 1.0

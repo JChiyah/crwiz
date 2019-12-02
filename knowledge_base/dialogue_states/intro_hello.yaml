@@ -1,0 +1,8 @@
+name: intro_hello
+formulations:
+- Hello world!
+- Hi, how are you?
+transition_states:
+- inform_end
+transition_probabilities:
+  inform_end: 1.0

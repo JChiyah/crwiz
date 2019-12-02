@@ -1,0 +1,27 @@
+{
+  "title": "Emergency Response Game",
+  "html": [
+  ],
+  "css": {
+    "header, footer": {
+      "background": "#242943"
+    },
+    "#image-area": {
+      "align-content": "left",
+      "margin": "50px 20px 15px",
+      "max-width": "100%"
+    },
+    "#image-area img": {
+      "max-width": "100%",
+      "max-height": "400px"
+    }
+  },
+  "scripts": {
+    "incoming-text": "display-text",
+    "incoming-image": "display-image",
+    "submit-message": "send-message",
+    "print-history": "plain-history",
+    "typing-users": "typing-users",
+    "plain": "ask-reload"
+  }
+}

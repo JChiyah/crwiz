@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  # database using MariaDB image that runs alongside the app
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "false"
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      TZ: "Europe/London"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u ${DB_USER} --password=${DB_PASSWORD}
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # crwiz docker image
+  app:
+    build:
+      dockerfile: docker/crwiz/Dockerfile-slim
+      context: .
+    restart: on-failure
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - ${ENTRY_PORT}:5000
+    volumes:
+      - type: volume
+        source: app_volume
+        target: /app/logs
+    environment:
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DATABASE_URL: mysql+pymysql://${DB_USER}:${DB_PASSWORD}@db/${DB_NAME}
+      DROP_DATABASE_ON_STARTUP: "false"
+      TZ: "Europe/London"
+
+volumes:
+  app_volume:
+    driver_opts:
+      type: none
+      device: ${VOLUME_PATH} # windows path to the logs folder
+      o: bind

@@ -1,0 +1,50 @@
+{
+  "title": "Waiting Room",
+  "subtitle": "waiting for other players...",
+  "html": [
+    {
+      "layout-type": "div",
+      "id": "image-area",
+      "layout-content": [
+        {
+          "layout-type": "image",
+          "id": "current-image",
+          "src": "https://media.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif",
+          "width": "100%",
+          "height": "100%"
+        }
+      ]
+    },
+    {
+      "layout-type": "div",
+      "id": "waiting-room-instructions",
+      "layout-content": [
+        "<p>Please wait while we find a partner for you...</p><h3>Game Information</h3><p>You are at an offshore processing facility. An emergency has come up that requires collaboration to resolve. You have limited time and a fleet of robots to complete the mission.</p>"
+      ]
+    },
+    {
+      "layout-type": "div",
+      "id": "typing"
+    }
+  ],
+  "css": {
+    "header, footer": {
+      "background": "#242943"
+    },
+    "#image-area": {
+      "align-content": "left",
+      "margin": "50px 20px 15px"
+    },
+    "#waiting-room-instructions": {
+      "margin": "50px 20px 15px"
+    }
+  },
+  "scripts": {
+    "incoming-text": "display-text",
+    "incoming-image": "display-image",
+    "submit-message": "send-message",
+    "print-history": "plain-history",
+    "typing-users": "typing-users",
+    "document-ready": "waiting-room"
+  }
+}

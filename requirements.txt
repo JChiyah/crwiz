@@ -1,0 +1,29 @@
+# Server
+Flask
+Flask-Login
+Flask-SocketIO
+Flask-SQLAlchemy
+Flask-WTF == 0.14.2
+Flask-HTTPAuth == 3.2.4
+WTForms == 2.2.1
+bson == 0.5.8
+
+# Tools and utilities
+Werkzeug
+SQLAlchemy-utils
+psycopg2-binary == 2.8.1
+
+# Deployment
+gevent
+gevent-websocket
+gunicorn == 19.9.0
+tornado
+
+# Bots
+SocketIO-client == 0.7.2
+
+# CRWIZ
+PyMysql
+pytest
+numpy
+PyYaml

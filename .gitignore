@@ -1,0 +1,33 @@
+log/
+*__pycache__*
+.DS_Store
+_build
+
+*.db
+
+# ignore virtual environment
+.venv-*
+
+# idea
+.idea
+
+# logs
+logs/*log*
+logs/*json*
+logs/*/*log*
+logs/*/*json*
+logs/data-dump.sql
+
+.tern-project
+.env
+
+loaded_states/
+
+# data collected
+data_collected/**/*json*
+data_collected/**/*html*
+data_collected/**/*log*
+data_collected/*/data-dump.sql
+data_collected/datasets
+data_collected/mra*
+data_collected/multiple_regression_analysis_data*

@@ -1,0 +1,23 @@
+{
+  "name": "orca-slurk",
+  "version": "1.0.0",
+  "description": "Slurk - A Lightweight Chat Server for Dialogue Experiments and Data Collection\r ==============================================================================",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JChiyah/orca-slurk.git"
+  },
+  "author": "JChiyah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JChiyah/orca-slurk/issues"
+  },
+  "homepage": "https://github.com/JChiyah/orca-slurk#readme"
+}

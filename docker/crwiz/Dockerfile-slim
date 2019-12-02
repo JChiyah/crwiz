@@ -1,0 +1,23 @@
+FROM python:3.7.3-slim as base
+
+FROM base as builder
+
+RUN mkdir /install
+WORKDIR /install
+
+COPY requirements.txt /requirements.txt
+
+RUN apt update && apt install -y libpq-dev gcc python3-dev
+
+RUN pip install --install-option="--prefix=/install" --no-cache-dir -r /requirements.txt
+RUN pip install --install-option="--prefix=/install" --no-cache-dir tornado
+
+FROM base
+
+COPY --from=builder /install /usr/local
+COPY . /app
+
+WORKDIR /app
+
+EXPOSE 5000
+ENTRYPOINT ["gunicorn", "-w", "1", "-b", ":5000", "-k", "geventwebsocket.gunicorn.workers.GeventWebSocketWorker", "run:app"]
