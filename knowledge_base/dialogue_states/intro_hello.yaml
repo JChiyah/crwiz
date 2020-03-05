@@ -4,5 +4,9 @@ formulations:
 - Hi, how are you?
 transition_states:
 - inform_end
+- trigger_subtask
+- trigger_popup
 transition_probabilities:
-  inform_end: 1.0
+  inform_end: 0.2
+  trigger_subtask: 0.4
+  trigger_popup: 0.4

@@ -3,8 +3,8 @@ Flask
 Flask-Login
 Flask-SocketIO
 Flask-SQLAlchemy
-Flask-WTF == 0.14.2
-Flask-HTTPAuth == 3.2.4
+Flask-WTF == 0.14.3
+Flask-HTTPAuth == 3.3.0
 WTForms == 2.2.1
 bson == 0.5.8
 

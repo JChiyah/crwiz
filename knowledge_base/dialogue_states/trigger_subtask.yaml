@@ -1,0 +1,10 @@
+name: trigger_subtask
+subtask: introduction
+formulations:
+- This example template will change the subtask in the room (a milestone), making inform_end dialogue state available.
+transition_states:
+- inform_end
+- trigger_popup
+transition_probabilities:
+  inform_end: 0.5
+  trigger_popup: 0.5

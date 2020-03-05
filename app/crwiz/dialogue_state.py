@@ -154,7 +154,7 @@ def load_dialogue_states(folder_path: str) -> Dict[str, DialogueState]:
 
 				tmp_state = DialogueState.from_yaml_file(file_path)
 				if tmp_state.name in loaded_states:
-					logger_orca.warning(f'Overwriting state \'{tmp_state.name}\'')
+					logger_crwiz.warning(f'Overwriting state \'{tmp_state.name}\'')
 				loaded_states[tmp_state.name] = tmp_state
 
 	return loaded_states

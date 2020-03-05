@@ -1,4 +1,13 @@
 
+"""
+finite_state_machine
+--------------------
+
+Finite State Machine that controls the dialogue states in each active room.
+Dialogue states are loaded at initialisation in self._load_states()
+
+Author: Javier Chiyah, Heriot-Watt University, 2019
+"""
 
 import os
 import random
@@ -12,9 +21,9 @@ from ..models.log import get_user_logs_for_event
 from ..models.state_history import StateHistory, get_user_states, \
 	check_used_state
 
-from . import logger_crwiz, dialogue_state
+from . import logger_crwiz, dialogue_state, fake_actions
 from .utils import helper, constants, dialogue_utils
-from .active_room import ActiveRoom
+from .active_room import ActiveRoom, Subtask
 
 
 MIN_TRANSITION_UTTERANCES = 1
@@ -40,7 +49,8 @@ class FiniteStateMachine(object):
 		root_folder = os.path.join(os.path.split(
 			os.path.abspath(__file__))[0], "..", "..")
 
-		states_folder_path = os.path.join(root_folder, 'knowledge_base', 'dialogue_states')
+		states_folder_path = os.path.join(
+			root_folder, 'knowledge_base', 'dialogue_states')
 		self.states = dialogue_state.load_dialogue_states(states_folder_path)
 
 		self.fixed_states = [
@@ -113,9 +123,9 @@ class FiniteStateMachine(object):
 
 			return final_result
 
-	def get_additional_utterances(self, user_id) -> list:
+	def get_additional_utterances(self, active_room: ActiveRoom) -> list:
 		additional_utterances = []
-		user_states = get_user_states(user_id)
+		user_states = get_user_states(active_room.wizard_id)
 
 		if user_states and len(user_states) > 0:
 			# remove latest state (because it already doesn't have enough utterances)
@@ -127,11 +137,17 @@ class FiniteStateMachine(object):
 				# get transition states for that state
 				state_transitions = self.states[this_state].transitions
 
+				# filter those that do not correspond to current subtask
+				state_transitions = self.filter_transitions_by_subtask(
+					state_transitions, active_room.current_subtask)
+
 				# get the utterances for those transition states in a list
-				state_utterances = self.get_states_utterances(state_transitions, user_id)
+				state_utterances = self.get_states_utterances(
+					state_transitions, active_room.wizard_id)
 
 				# filter utterances by those already used
-				state_utterances = filter_used_transitions(user_id, state_utterances)
+				state_utterances = filter_used_transitions(
+					active_room.wizard_id, state_utterances)
 				if len(state_utterances) > 0:
 					# add them to the list of additional utterances
 					additional_utterances.extend(state_utterances)
@@ -148,6 +164,15 @@ class FiniteStateMachine(object):
 					f"{[utt['state_name'] for utt in additional_utterances]}")
 		# return additional_utterances[:utterances_needed]
 		return additional_utterances
+
+	def filter_transitions_by_subtask(self, transitions: list, subtask: Subtask):
+		filtered_transitions = []
+		for transition in transitions:
+			if self.states[transition].subtask is None \
+				or subtask.name == self.states[transition].subtask:
+				filtered_transitions.append(transition)
+
+		return filtered_transitions
 
 	@staticmethod
 	def post_process_utterances(utterance_list: list) -> list:
@@ -167,14 +192,20 @@ class FiniteStateMachine(object):
 		self.submit_dialogue_choice(active_room, INITIAL_STATE, '')
 
 	def get_current_state_utterances(self, active_room: ActiveRoom) -> dict:
-		user_id = active_room.wizard_id
-
 		transitions = self.states[active_room.current_state].transitions
 
-		transition_utterances = self.get_states_utterances(transitions, user_id)
+		# filter those that do not correspond to current subtask
+		transitions = self.filter_transitions_by_subtask(
+			transitions, active_room.current_subtask)
 
+		# get the utterances for those transition states
+		transition_utterances = self.get_states_utterances(
+			transitions, active_room.wizard_id)
+
+		# add a few more transition formulations if there are not enough
 		if len(transition_utterances) < MIN_TRANSITION_UTTERANCES:
-			transition_utterances.extend(self.get_additional_utterances(user_id))
+			transition_utterances.extend(
+				self.get_additional_utterances(active_room))
 
 		# remove duplicated
 		tmp_utterances = []
@@ -200,6 +231,9 @@ class FiniteStateMachine(object):
 				'elements': final_utterances
 			}
 		}
+
+		if fake_actions.state_contains_action(active_room.current_state):
+			fake_actions.emit_action(active_room)
 
 		return response
 

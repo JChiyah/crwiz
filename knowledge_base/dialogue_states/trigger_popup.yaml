@@ -1,0 +1,11 @@
+name: trigger_popup
+formulations:
+- This example template will trigger a popup in the Wizard interface after the other participant replies to this message.
+transition_states:
+- inform_end
+- trigger_popup
+- trigger_subtask
+transition_probabilities:
+  inform_end: 0.4
+  trigger_popup: 0.3
+  trigger_subtask: 0.3

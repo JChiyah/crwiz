@@ -1,4 +1,13 @@
 
+"""
+task_manager
+------------
+
+Manages high-level tasks such as signalling a change in dialogue state.
+
+Author: Javier Chiyah, Heriot-Watt University, 2019
+"""
+
 import json
 from typing import Dict
 
@@ -15,7 +24,7 @@ from ..socket_logic import user_logic
 from ..socket_logic import room_logic
 
 from . import logger_crwiz, finite_state_machine, game_token
-from .active_room import Subtask, ActiveRoom
+from .active_room import Subtask, ActiveRoom, SUBTASK_END
 from .utils import constants, post_task_analysis
 
 
@@ -250,15 +259,15 @@ class TaskManager:
 			reason = kwargs.get("reason", "")
 			reason_id = kwargs.get("reason_id", "")
 			if reason_id == "":
-				if active_room.current_state == "inform_mission_completed":
+				if active_room.current_state == 'inform_end':
 					reason_id = constants.TASK_END_DIALOGUE
 					# reason = "End of the dialogue reached"
 				elif user_triggered:
 					reason_id = constants.TASK_END_USER_TRIGGERED
 					# reason = "A user decided to finish the game"
-				elif active_room.current_subtask != Subtask.assess_damage:
+				elif active_room.current_subtask != SUBTASK_END:
 					reason_id = constants.TASK_END_TIME_OUT
-					reason = "Time out! The facility needs to evacuate immediately."
+					reason = "Time out! The task has finished."
 				else:
 					reason_id = constants.TASK_END_UNSPECIFIED
 
@@ -285,7 +294,7 @@ class TaskManager:
 				db.session.commit()
 
 				logger_crwiz.debug(
-					f"User {user.id} '{user.name}' has finished its task")
+					f"User {user.id} '{user.name}' has finished the task")
 				active_room.log_user_event(
 					constants.EVENT_GENERATE_GAME_TOKEN,
 					data={

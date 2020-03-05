@@ -1,4 +1,13 @@
 
+"""
+active_room
+-----------
+
+Class to hold an active room where participants are doing the dialogue task.
+
+Author: Javier Chiyah, Heriot-Watt University, 2019
+"""
+
 import enum
 import threading
 from typing import List, Tuple, Callable
@@ -19,25 +28,35 @@ from .utils import helper, constants
 class Subtask(enum.Enum):
 	"""
 	A full class to provide syntax highlighting in PyCharm due to Enum bug
+
+	Each active room has a current_subtask, which controls the dialogue states
+	given to the Wizard. Advancing subtasks in milestone events will provide
+	the Wizard with different states (if a subtask was added in the yaml file).
 	"""
-	inspect = 1
-	extinguish = 2
-	assess_damage = 3
+	introduction = 1
+	finish = 2
 
 
-SUBTASK_START = Subtask.inspect
+SUBTASK_START = Subtask.introduction
+SUBTASK_END = Subtask.finish
 
-MISSION_TIME = 6 * 60   # 6 minutes
+# Maximum time for the task - a timeout will trigger
+# when this time has passed closing the chat room
+TASK_TIME = 6 * 60   # 6 minutes
 
 # Min number of turns until users can finish the game (if Subtask.assess_damage)
 # 14 is the minimum amount of turns to reach that point, so 15 means that they
 # sent at least 1 additional message
 MINIMUM_USER_TURNS = 15
 
-SUBTASK_THRESHOLD = 30  # means each subtask accounts for 30% of progress
+SUBTASK_THRESHOLD = 0.5  # means each subtask accounts for 50% of progress
 
 
 class ActiveRoom:
+	"""
+	Holds information about an active room with several participants and a task.
+
+	"""
 
 	def __init__(
 		self, room_name: str, wizard_id, timeout_callback: Callable):
@@ -48,7 +67,7 @@ class ActiveRoom:
 		self.task_finished = False
 		self.start_time = None
 		self.end_time = None
-		self.set_end_time(MISSION_TIME, start_timer=False)
+		self.set_end_time(TASK_TIME, start_timer=False)
 
 		self.subtask_stack: List[Tuple[Subtask, float]] = []
 		self.last_analysed_msg: int = 0
@@ -132,7 +151,7 @@ class ActiveRoom:
 		if self.room_timer:
 			secs = self.end_time - helper.get_unix_timestamp()
 		else:
-			secs = MISSION_TIME
+			secs = TASK_TIME
 		return int(secs) if secs > 0 else 0
 
 	@property
@@ -223,10 +242,15 @@ class ActiveRoom:
 			self.progress = 1
 			# trigger the end of the task in 1 second...
 			self.set_end_time(1)
+		if state_name == 'trigger_subtask':
+			# advance subtask and progress
+			self.progress = SUBTASK_THRESHOLD * (len(list(Subtask)) - 1)
+			self.advance_subtask(Subtask.finish)
+
 		else:
 			# increase progress a little if it is not too close to SUBTASK_THRESHOLD
-			if int((self.progress + 0.015*1.5) * 100 / SUBTASK_THRESHOLD) == \
-				int(self.progress * 100 / SUBTASK_THRESHOLD):
+			if int((self.progress + 0.015*1.5) * SUBTASK_THRESHOLD) == \
+				int(self.progress * SUBTASK_THRESHOLD):
 				self.progress += 0.015
 			if self.progress > 0.95:
 				self.progress = 0.95
@@ -254,11 +278,11 @@ class ActiveRoom:
 	def start_task(self):
 		self.start_time = helper.get_unix_timestamp()
 		self.log_user_event(constants.EVENT_START_TASK, {
-			'mission_start': self.start_time,
+			'task_start': self.start_time,
 			'users': self.users
 		})
 		self.advance_subtask(SUBTASK_START)
-		self.set_end_time(MISSION_TIME)
+		self.set_end_time(TASK_TIME)
 
 	def start_token_timer(self, timeout_callback: Callable):
 		# timeout in 5 minutes

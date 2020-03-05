@@ -34,9 +34,9 @@ FakeAction = collections.namedtuple(
 
 
 STATES_WITH_ACTIONS = {
-	'request_pa_announcement': FakeAction(
-		ActionTrigger.on_operator_message, 'pa_announcement', 'PA Announcement',
-		None, 'Make Announcement', 'Cancel', None)
+	'trigger_popup': FakeAction(
+		ActionTrigger.on_operator_message, 'trigger_popup', 'Example Pop-up',
+		None, 'Do something', 'Cancel', None)
 }
 
 
