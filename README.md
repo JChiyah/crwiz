@@ -1,7 +1,7 @@
 CRWIZ: A framework for collecting real-time Wizard of Oz dialogues through Crowdsourcing for collaborative, complex tasks
 ==============================================================================
 
-To appear at LREC 2020, see [Publication] for more information. The data collected is in the compressed file "data_collected.zip".
+Published at LREC 2020, see [Publication] for more information. The data collected is in the compressed file "data_collected.zip".
 
 
 ### Running CRWIZ
@@ -33,6 +33,8 @@ Check [Slurk] for more information, particularly for how to deploy it or how the
 
 ## Publication
 
+Original publication: [https://www.aclweb.org/anthology/2020.lrec-1.36]
+
 Please cite our work as the following:
 
     Chiyah Garcia, F., Lopes, J., Liu, X., and Hastie, H. 2020. CRWIZ: A Framework for Crowdsourcing Real-Time Wizard-of-Oz Dialogues. In Proceedings of the Twelfth International Conference on Language Resources and Evaluation (LREC 2020). European Language Resources Association (ELRA).
@@ -40,15 +42,19 @@ Please cite our work as the following:
 Bibtex:
 
 ```bibtex
-@inproceedings{ChiyahLREC20,
-    title = {CRWIZ: A Framework for Crowdsourcing Real-Time Wizard-of-Oz Dialogues},
-    author = {Chiyah Garcia, Francisco J. and Lopes, Jos{\'{e}} and Liu, Xingkun and Hastie, Helen},
-    booktitle = {Proceedings of the Twelfth International Conference on Language Resources and Evaluation (LREC 2020)},
-    series = {LREC'20},
-    year = {2020},
+@inproceedings{chiyah-garcia-etal-2020-crwiz,
+    title = {{CRWIZ}: A Framework for Crowdsourcing Real-Time {W}izard-of-{O}z Dialogues},
+    author = {Chiyah Garcia, Francisco J. and Lopes, Jos{\'e} and Liu, Xingkun and Hastie, Helen},
+    booktitle = {Proceedings of the 12th Language Resources and Evaluation Conference},
     month = {5},
+    year = {2020},
+    series = {LREC '20},
     address = {Marseille, France},
-    publisher = {European Language Resources Association (ELRA)},
+    publisher = {European Language Resources Association},
+    url = {https://www.aclweb.org/anthology/2020.lrec-1.36},
+    pages = {288--297},
+    language = {English},
+    ISBN = {979-10-95546-34-4},
 }
 
 ```
