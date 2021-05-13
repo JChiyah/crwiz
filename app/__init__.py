@@ -8,8 +8,11 @@ from logging import getLogger
 from flask import Flask, request, flash, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
+import flask_socketio
 from flask_socketio import SocketIO
 
+# print(flask_socketio.__version__)
+# exit()
 import pymysql.err
 import sqlalchemy.exc
 from sqlalchemy import event

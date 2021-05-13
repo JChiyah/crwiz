@@ -7,10 +7,14 @@ from .. import db
 from . import Base
 
 
+# turn off cache for UUIDType to supress warning in newer versions
+# more info needed before turning this one as it possibly slows down the app if False
+UUIDType.cache_ok = False
+
 class Token(Base):
     __tablename__ = "Token"
 
-    id = db.Column(UUIDType(binary=False), default=uuid4, primary_key=True)
+    id = db.Column(UUIDType(binary=False, cache_ok=False), default=uuid4, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('Task.id'))
     room_name = db.Column(db.String(100), db.ForeignKey('Room.name'), nullable=False)

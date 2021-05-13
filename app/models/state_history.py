@@ -16,7 +16,7 @@ class StateHistory(Base):
 	previous_state = db.Column(db.String(100), nullable=False)
 	utterance = db.Column(db.String(250), nullable=False)
 	current_state = db.Column(db.String(100), nullable=False)
-	data = db.Column(db.Binary, nullable=True)
+	data = db.Column(db.LargeBinary, nullable=True)
 
 	def as_dict(self):
 		return {
