@@ -2,11 +2,12 @@
 Flask
 Flask-Login
 Flask-SocketIO == 4.3.2
-Flask-SQLAlchemy == 1.4.15
+Flask-SQLAlchemy
 Flask-WTF == 0.14.3
 Flask-HTTPAuth == 3.3.0
 WTForms == 2.2.1
 bson == 0.5.8
+SQLAlchemy == 1.4.15
 
 # Tools and utilities
 Werkzeug

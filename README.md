@@ -13,18 +13,17 @@ Known working versions: Python 3.7.2 and Python 3.7.6, 3.7.10
 Installation and deployment with Python:
 
 ```bash
-	# 1. Create virtual environment
-	python3.7 -m venv .venv-crwiz
+# 1. Create virtual environment
+python3.7 -m venv .venv-crwiz
 
-	# 2. Source the virtual environment
-	source .venv-crwiz/bin/activate
+# 2. Source the virtual environment
+source .venv-crwiz/bin/activate
 
-	# 3. Install requirements from requirements.txt
-	pip install -r requirements.txt
+# 3. Install requirements from requirements.txt
+pip install -r requirements.txt
 
-	# Run the CRWIZ framework
-	python run.py
-
+# Run the CRWIZ framework
+python run.py
 ```
 
 Go to [localhost:5000/portal] in two different browsers to be paired up.
