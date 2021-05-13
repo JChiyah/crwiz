@@ -8,21 +8,26 @@ Published at LREC 2020, see [Publication] for more information. The data collect
 
 Python version: >= 3.7.0
 
-Known working versions: Python 3.7.2 and Python 3.7.6
+Known working versions: Python 3.7.2 and Python 3.7.6, 3.7.10
 
-- Create virtual environment
+Installation and deployment with Python:
 
-      $ python3.7 -m venv .venv-crwiz
+```bash
+	# 1. Create virtual environment
+	python3.7 -m venv .venv-crwiz
 
-- Install requirements from requirements.txt:
+	# 2. Source the virtual environment
+	source .venv-crwiz/bin/activate
 
-      $ pip install -r requirements.txt
+	# 3. Install requirements from requirements.txt
+	pip install -r requirements.txt
 
-- Run the CRWIZ framework:
+	# Run the CRWIZ framework
+	python run.py
 
-      $ python run.py
+```
 
-- Go to [localhost:5000/portal] in two different browsers to be paired up.
+Go to [localhost:5000/portal] in two different browsers to be paired up.
 
 
 There is a docker-compose file to easily deploy on a server.
